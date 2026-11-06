@@ -15,3 +15,20 @@ def cost(theta0, theta1, x, y):
     squared_errors = errors ** 2
     return squared_errors.sum() / (2 * n)
 
+
+def gradient_descent(x, y, alpha, n_iterations, theta0=0.0, theta1=0.0):
+    n = len(x)
+    cost_history = []
+
+    for _ in range(n_iterations):
+        errors = predict(theta0, theta1, x) - y
+
+        grad0 = errors.sum() / n
+        grad1 = (errors * x).sum() / n
+
+        theta0 = theta0 - alpha * grad0
+        theta1 = theta1 - alpha * grad1
+
+        cost_history.append(cost(theta0, theta1, x, y))
+
+    return theta0, theta1, cost_history

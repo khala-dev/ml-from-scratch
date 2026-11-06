@@ -1,5 +1,5 @@
 import numpy as np
-from linear_regression import predict, cost
+from linear_regression import predict, cost, gradient_descent
 
 #test cases for predict function
 def test_predict_matches_hand_calculated():
@@ -35,3 +35,33 @@ def test_cost_grows_as_line_moves_away():
     y = np.array([1, 2, 3])
     assert cost(0, 1, x, y) < cost(0, 0.5, x, y) < cost(0, 0, x, y)
 
+
+#test cases for gradient descent function
+def test_gradient_descent_one_step_matches_hand_calculation():
+    x = np.array([1, 2, 3])
+    y = np.array([1, 2, 3])
+    theta0, theta1, _ = gradient_descent(x, y, alpha=0.1, n_iterations=1)
+    assert np.isclose(theta0, 0.2)
+    assert np.isclose(theta1, 1.4 / 3)
+
+
+def test_gradient_descent_finds_the_perfect_line():
+    x = np.array([1, 2, 3])
+    y = np.array([1, 2, 3])
+    theta0, theta1, _ = gradient_descent(x, y, alpha=0.1, n_iterations=2000)
+    assert np.isclose(theta0, 0, atol=1e-3)
+    assert np.isclose(theta1, 1, atol=1e-3)
+
+
+def test_cost_decreases_with_small_alpha():
+    x = np.array([1, 2, 3])
+    y = np.array([1, 2, 3])
+    _, _, history = gradient_descent(x, y, alpha=0.1, n_iterations=50)
+    assert all(a >= b for a, b in zip(history, history[1:]))
+
+
+def test_cost_grows_when_alpha_is_too_large():
+    x = np.array([1, 2, 3])
+    y = np.array([1, 2, 3])
+    _, _, history = gradient_descent(x, y, alpha=1, n_iterations=10)
+    assert history[-1] > history[0]
