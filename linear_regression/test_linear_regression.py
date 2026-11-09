@@ -89,3 +89,8 @@ def test_cost_is_close_to_minimum_when_stopped_early():
         AREA, PRICE, alpha=0.0001, n_iterations=100000, tolerance=0.01
     )
     assert history[-1] < 1920
+
+
+def test_cost_grows_on_housing_data_when_alpha_is_too_large():
+    _, _, history = gradient_descent(AREA, PRICE, alpha=0.0005, n_iterations=10)
+    assert history[-1] > history[0]
