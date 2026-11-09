@@ -16,7 +16,7 @@ def cost(theta0, theta1, x, y):
     return squared_errors.sum() / (2 * n)
 
 
-def gradient_descent(x, y, alpha, n_iterations, theta0=0.0, theta1=0.0):
+def gradient_descent(x, y, alpha, n_iterations, theta0=0.0, theta1=0.0, tolerance=None):
     n = len(x)
     cost_history = []
 
@@ -30,5 +30,9 @@ def gradient_descent(x, y, alpha, n_iterations, theta0=0.0, theta1=0.0):
         theta1 = theta1 - alpha * grad1
 
         cost_history.append(cost(theta0, theta1, x, y))
+
+        if tolerance is not None and len(cost_history) > 1:
+            if abs(cost_history[-2] - cost_history[-1]) < tolerance:
+                break
 
     return theta0, theta1, cost_history
