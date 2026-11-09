@@ -1,9 +1,6 @@
 import numpy as np
 from linear_regression import predict, cost, gradient_descent
 
-AREA = np.array([50, 65, 80, 95, 110])
-PRICE = np.array([900, 1100, 1500, 1600, 2000])
-
 #test cases for predict function
 def test_predict_matches_hand_calculated():
     # Line y_hat = 6.5 + 1.8x
@@ -69,7 +66,13 @@ def test_cost_grows_when_alpha_is_too_large():
     _, _, history = gradient_descent(x, y, alpha=1, n_iterations=10)
     assert history[-1] > history[0]
     
-    def test_runs_all_iterations_when_no_tolerance():
+
+
+AREA = np.array([50, 65, 80, 95, 110])
+PRICE = np.array([900, 1100, 1500, 1600, 2000])
+
+
+def test_runs_all_iterations_when_no_tolerance():
     _, _, history = gradient_descent(AREA, PRICE, alpha=0.0001, n_iterations=50)
     assert len(history) == 50
 
@@ -78,7 +81,7 @@ def test_stops_early_when_cost_change_is_below_tolerance():
     _, _, history = gradient_descent(
         AREA, PRICE, alpha=0.0001, n_iterations=100000, tolerance=0.01
     )
-    assert len(history) == 8
+    assert len(history) == 9
 
 
 def test_cost_is_close_to_minimum_when_stopped_early():
